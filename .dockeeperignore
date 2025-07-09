@@ -1,0 +1,32 @@
+# Generated files
+dist/
+build/
+coverage/
+
+# Dependencies
+node_modules/
+
+# Test files
+*.test.ts
+*.spec.ts
+**/test/**
+**/tests/**
+
+# Cache and temporary files
+.dockeeper_cache/
+*.tmp
+*.log
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Custom ignores for this project
+test-summarization*.ts
+prompt_tests/results/

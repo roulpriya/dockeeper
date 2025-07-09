@@ -1,0 +1,18 @@
+{
+  "templateId": "summarizer-v1.0",
+  "testId": "summarizer_1752066988015",
+  "timestamp": "2025-07-09T13:16:28.015Z",
+  "inputs": {
+    "filename": "summarize-codebase-tool.ts",
+    "filePurpose": "source file",
+    "diffContent": "import { promises as fs } from \"node:fs\";\nimport { join, resolve, relative, extname } from \"node:path\";\nimport type { Tool } from \"../agents/tool\";\nimport { createSummarizerAgent } from \"../agents/summarizer-agent\";\nimport { createIgnorePatternManager } from \"../utils/ignore-patterns\";\nimport { createSummaryStorage } from \"../utils/summary-storage\";\nimport { promptManager } from \"../prompt-manager\";\n\ninterface SummarizeCodebaseArgs {\n\tpath: string;\n\tmaxDepth?: number;\n\tignorePatterns?: string[];\n\tchunkSize?: number;\n\tapiKey: string;\n}\n\ninterface FileSummary {\n\tfilename: string;\n\trelativePath: string;\n\tsummary: string;\n\tkeyFunctions: string[];\n\tdependencies: string[];\n\texportedSymbols: string[];\n\tchunkSummaries?: ChunkSummary[];\n}\n\ninterface ChunkSummary {\n\tstartLine: number;\n\tendLine: number;\n\tsummary: string;\n\tfunctions: string[];\n}\n\ninterface CodebaseSummary {\n\ttotalFiles: number;\n\tprocessedFiles: number;\n\tskippedFiles: number;\n\tfileSummaries: FileSummary[];\n\toverallStructure: string;\n\tkeyComponents: string[];\n\tdependencies: string[];\n\ttimestamp: string;\n}\n\nconst SUPPORTED_EXTENSIONS = [\n\t'.ts', '.js', '.tsx', '.jsx', '.py', '.java', '.cpp', '.c', '.cs', '.go', '.rs', '.rb', '.php'\n];\n\nconst DEFAULT_IGNORE_PATTERNS = [\n\t'node_modules',",
+    "existingDocContext": ""
+  },
+  "output": "{\n  \"change_type\": \"new_feature\",\n  \"filename\": \"summarize-codebase-tool.ts\",\n  \"file_purpose\": \"source file\",\n  \"key_changes\": [\n    \"Added new interfaces: SummarizeCodebaseArgs, FileSummary, ChunkSummary, CodebaseSummary\",\n    \"Imported new modules: fs from node:fs, join, resolve, relative, extname from node:path\",\n    \"Imported new functions: createSummarizerAgent, createIgnorePatternManager, createSummaryStorage from different directories\",\n    \"Defined SUPPORTED_EXTENSIONS and DEFAULT_IGNORE_PATTERNS constants\"\n  ],\n  \"impact_areas\": [\n    \"api_reference\",\n    \"configuration\"\n  ],\n  \"new_dependencies\": [\n    \"node:fs\",\n    \"node:path\"\n  ],\n  \"breaking_changes\": [],\n  \"documentation_recommendations\": {\n    \"readme\": \"Include information about the new interfaces and constants added. Also, describe the purpose and usage of the imported modules and functions.\",\n    \"api_docs\": \"Update the API documentation to include the new interfaces: SummarizeCodebaseArgs, FileSummary, ChunkSummary, CodebaseSummary. Also, document the new constants: SUPPORTED_EXTENSIONS and DEFAULT_IGNORE_PATTERNS.\",\n    \"changelog\": \"Mention the addition of new interfaces, constants, and imported modules/functions in the changelog.\"\n  }\n}",
+  "metrics": {
+    "completeness": 1,
+    "accuracy": 0.8,
+    "consistency": 0.9,
+    "responseTime": 15342
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "templateId": "summarizer-v1.0",
+  "testId": "summarizer_1752067066089",
+  "timestamp": "2025-07-09T13:17:46.089Z",
+  "inputs": {
+    "filename": "summarize-codebase-tool.ts",
+    "filePurpose": "source file",
+    "diffContent": "\t\t\t// Single chunk - summarize the entire file\n\t\t\tsummary = await this.summarizeChunk(content, filename, relativePath);\n\t\t} else {\n\t\t\t// Multiple chunks - summarize each chunk and then create overall summary\n\t\t\tconst lines = content.split('\\n');\n\t\t\tfor (let i = 0; i < chunks.length; i++) {\n\t\t\t\tconst startLine = i * this.fileChunker.chunkSize + 1;\n\t\t\t\tconst endLine = Math.min((i + 1) * this.fileChunker.chunkSize, lines.length);\n\t\t\t\t\n\t\t\t\tconst chunkSummary = await this.summarizeChunk(chunks[i], filename, relativePath);\n\t\t\t\tconst chunkFunctions = this.extractFunctions(chunks[i]);\n\t\t\t\t\n\t\t\t\tchunkSummaries.push({\n\t\t\t\t\tstartLine,\n\t\t\t\t\tendLine,\n\t\t\t\t\tsummary: chunkSummary,\n\t\t\t\t\tfunctions: chunkFunctions\n\t\t\t\t});\n\t\t\t}\n\t\t\t\n\t\t\t// Create overall summary from chunk summaries\n\t\t\tsummary = this.createOverallFileSummary(chunkSummaries, filename);\n\t\t}\n\n\t\treturn {\n\t\t\tfilename,\n\t\t\trelativePath,\n\t\t\tsummary,\n\t\t\tkeyFunctions,\n\t\t\tdependencies,\n\t\t\texportedSymbols,\n\t\t\tchunkSummaries: chunkSummaries.length > 0 ? chunkSummaries : undefined\n\t\t};\n\t}\n\n\tprivate async summarizeChunk(content: string, filename: string, relativePath: string): Promise<string> {\n\t\ttry {\n\t\t\tconst filePurpose = this.inferFilePurpose(filename, relativePath);\n\t\t\tconst result = await this.summarizerAgent.summarizeChanges({\n\t\t\t\tfilename,\n\t\t\t\tfilePurpose,\n\t\t\t\tdiffContent: content,\n\t\t\t\texistingDocContext: ''\n\t\t\t});\n\t\t\t\n\t\t\treturn result.key_changes?.join(' ') || 'No summary available';\n\t\t} catch (error) {\n\t\t\tconsole.warn(`Error summarizing chunk for ${filename}:`, error);\n\t\t\treturn `File contains ${content.split('\\n').length} lines of code`;\n\t\t}",
+    "existingDocContext": ""
+  },
+  "output": "{\n  \"change_type\": \"enhancement\",\n  \"filename\": \"summarize-codebase-tool.ts\",\n  \"file_purpose\": \"source file\",\n  \"key_changes\": [\n    \"Added functionality to summarize the entire file if it contains a single chunk\",\n    \"For multiple chunks, each chunk is summarized individually and then an overall summary is created\",\n    \"Added error handling in the 'summarizeChunk' method to return a generic message if an error occurs during summarization\"\n  ],\n  \"impact_areas\": [\n    \"usage\",\n    \"api_reference\"\n  ],\n  \"new_dependencies\": [],\n  \"breaking_changes\": [],\n  \"documentation_recommendations\": {\n    \"readme\": \"Update the 'Usage' section to include information on how the tool handles single and multiple chunks in a file. Mention the new error handling behavior in the 'summarizeChunk' method.\",\n    \"api_docs\": \"Update the documentation for the 'summarizeChunk' method to include its new error handling behavior. Also, update the documentation for the main method to explain how it handles single and multiple chunks.\",\n    \"changelog\": \"Added enhancements to the summarization tool. It can now handle both single and multiple chunks in a file. Also, improved error handling in the 'summarizeChunk' method.\"\n  }\n}",
+  "metrics": {
+    "completeness": 1,
+    "accuracy": 0.8,
+    "consistency": 0.9,
+    "responseTime": 12911
+  }
+}

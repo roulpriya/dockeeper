@@ -1,0 +1,18 @@
+{
+  "templateId": "summarizer-v1.0",
+  "testId": "summarizer_1752067002483",
+  "timestamp": "2025-07-09T13:16:42.483Z",
+  "inputs": {
+    "filename": "summarize-codebase-tool.ts",
+    "filePurpose": "source file",
+    "diffContent": "\t'.git',\n\t'dist',\n\t'build',\n\t'coverage',\n\t'.next',\n\t'.nuxt',\n\t'.cache',\n\t'__pycache__',\n\t'.pytest_cache',\n\t'.venv',\n\t'venv',\n\t'.DS_Store',\n\t'*.min.js',\n\t'*.min.css',\n\t'*.map'\n];\n\nclass CodebaseFileScanner {\n\tprivate ignoreManager: any;\n\tprivate maxDepth: number;\n\n\tconstructor(ignoreManager: any, maxDepth: number = 10) {\n\t\tthis.ignoreManager = ignoreManager;\n\t\tthis.maxDepth = maxDepth;\n\t}\n\n\tasync scanFiles(rootPath: string): Promise<string[]> {\n\t\tconst files: string[] = [];\n\t\tawait this.scanDirectory(rootPath, 0, files);\n\t\treturn files;\n\t}\n\n\tprivate async scanDirectory(dirPath: string, currentDepth: number, files: string[]): Promise<void> {\n\t\tif (currentDepth >= this.maxDepth) {\n\t\t\treturn;\n\t\t}\n\n\t\ttry {\n\t\t\tconst items = await fs.readdir(dirPath);\n\t\t\t\n\t\t\tfor (const item of items) {\n\t\t\t\tconst fullPath = join(dirPath, item);\n\t\t\t\t\n\t\t\t\tif (this.ignoreManager.shouldIgnore(fullPath)) {\n\t\t\t\t\tcontinue;\n\t\t\t\t}\n\n\t\t\t\tconst stats = await fs.stat(fullPath);\n\n\t\t\t\tif (stats.isDirectory()) {",
+    "existingDocContext": ""
+  },
+  "output": "{\n  \"change_type\": \"new_feature\",\n  \"filename\": \"summarize-codebase-tool.ts\",\n  \"file_purpose\": \"source file\",\n  \"key_changes\": [\n    \"Added a new class 'CodebaseFileScanner' to scan files in a directory up to a specified depth\",\n    \"The 'CodebaseFileScanner' class uses an 'ignoreManager' to skip certain files or directories\",\n    \"Implemented a 'scanFiles' method to initiate the scanning process\",\n    \"Implemented a 'scanDirectory' method to recursively scan directories\"\n  ],\n  \"impact_areas\": [\n    \"usage\",\n    \"api_reference\"\n  ],\n  \"new_dependencies\": [],\n  \"breaking_changes\": [],\n  \"documentation_recommendations\": {\n    \"readme\": \"Add a section explaining the new 'CodebaseFileScanner' class, its purpose, and how to use it. Include information about the 'ignoreManager' and how it affects the scanning process.\",\n    \"api_docs\": \"Add documentation for the new 'CodebaseFileScanner' class, including its constructor and the 'scanFiles' and 'scanDirectory' methods. Explain the parameters, return values, and any exceptions that might be thrown.\",\n    \"changelog\": \"Mention the addition of the new 'CodebaseFileScanner' class and its capabilities in the latest version updates.\"\n  }\n}",
+  "metrics": {
+    "completeness": 1,
+    "accuracy": 0.8,
+    "consistency": 0.9,
+    "responseTime": 14466
+  }
+}
