@@ -14,6 +14,7 @@ interface ParsedArgs {
 	help: boolean;
 	html: boolean;
 	staged: boolean;
+	updateReadme: boolean;
 }
 
 function showHelp(): void {
@@ -28,6 +29,7 @@ Options:
   -h, --help           Show this help message
   --html               Generate HTML summary report
   --staged             Process staged changes instead of comparing refs
+  --update-readme      Update README.md with last commit vs master
 
 Examples:
   docai                          # Use current directory, process staged changes
@@ -35,7 +37,8 @@ Examples:
   docai -B main -H feature       # Compare main to feature branch
   docai /path/to/repo -B v1.0.0  # Compare v1.0.0 to HEAD in specific path
   docai --html                   # Generate HTML report for staged changes
-  docai -B main -H feature --html # Compare refs and generate HTML report`);
+  docai -B main -H feature --html # Compare refs and generate HTML report
+  docai --update-readme          # Update README.md with last commit vs master`);
 }
 
 function parseArgs(args: string[]): ParsedArgs {
@@ -44,6 +47,7 @@ function parseArgs(args: string[]): ParsedArgs {
 		help: false,
 		html: false,
 		staged: false,
+		updateReadme: false,
 	};
 
 	let i = 0;
@@ -58,6 +62,9 @@ function parseArgs(args: string[]): ParsedArgs {
 			i++;
 		} else if (arg === "--staged") {
 			parsed.staged = true;
+			i++;
+		} else if (arg === "--update-readme") {
+			parsed.updateReadme = true;
 			i++;
 		} else if (arg === "-B" || arg === "--base") {
 			if (i + 1 >= args.length) {
@@ -117,7 +124,19 @@ async function main() {
 		let result: ProcessingResult;
 
 		// Process based on arguments
-		if (args.staged || (!args.baseRef && !args.headRef)) {
+		if (args.updateReadme) {
+			// Update README with last commit vs master
+			const git = new (await import("./git")).Git(args.path);
+			const mainBranch = await git.getMainBranch();
+			console.log(`📝 Updating README.md with last commit vs ${mainBranch}`);
+			
+			// Process diff between main branch and HEAD
+			result = await docAgent.processLargeDiff(
+				mainBranch,
+				"HEAD",
+				args.html,
+			);
+		} else if (args.staged || (!args.baseRef && !args.headRef)) {
 			// Process staged changes
 			result = await docAgent.processStagedChanges(args.html);
 		} else {

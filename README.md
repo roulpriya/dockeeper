@@ -1,37 +1,36 @@
-# Document AI
+# Dockeeper: AI-Powered Documentation Automation
 
-AI-powered document agent that analyzes code changes and updates documentation automatically.
+Dockeeper is an AI-powered documentation agent that analyzes code changes and updates project documentation automatically. It integrates with Git, leverages OpenAI's LLMs, and can be run locally or as part of your CI pipeline to ensure your documentation always reflects the current state of your codebase.
 
 ## Table of Contents
 - [Overview](#overview)
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Continuous Integration (CI)](#continuous-integration-ci)
 - [Project Structure](#project-structure)
 - [Contributing](#contributing)
 - [License](#license)
 
 ## Overview
-Document AI is an automation tool designed to keep project documentation up to date by analyzing code changes and automatically editing or generating documentation files such as `README.md`, `CONTRIBUTING.md`, and `DESIGN.md`. It leverages OpenAI's LLMs and integrates with Git for accurate change tracking.
+Dockeeper automates the process of keeping your documentation up-to-date by analyzing code changes and automatically editing or generating documentation files such as `README.md`, `CONTRIBUTING.md`, and `DESIGN.md`. It uses AI summarization, advanced Git integration, and can operate both via CLI and in CI environments.
 
 ## Features
-- Analyzes code changes using Git
-- Compare staged changes, or any two Git refs (branches, commits, tags) using CLI arguments
-- Detects and updates documentation files automatically
-- Warns about unstaged/untracked changes that are not included in diffs
-- Notifies when no staged changes are found
-- Supports TypeScript and Node.js projects
-- Uses OpenAI API for language generation
-- Modular tools for file reading, writing, tree listing, and directory listing
-- Extensible agent-based architecture
-- Command-line interface via `bin` entry (now available as `document-ai`)
+- **AI-powered code change summarization and documentation updates**
+- **Enhanced Git integration**: Compare staged changes or any two Git refs (branches, commits, tags)
+- **Automated documentation file updates** (README, CONTRIBUTING, DESIGN, etc.)
+- **Supports HTML summary report generation**
+- **Works in CI**: GitHub Actions workflow included for automated documentation PRs/comments
+- **Warns about unstaged/untracked changes**
+- **TypeScript and Node.js support**
+- **Extensible agent-based architecture**
+- **Rich CLI interface with new options (`--html`, `--staged`)**
 
 ## Installation
-
 1. **Clone the repository:**
    ```sh
    git clone <your-repo-url>
-   cd document-ai
+   cd dockeeper
    ```
 2. **Install dependencies:**
    ```sh
@@ -48,8 +47,7 @@ Document AI is an automation tool designed to keep project documentation up to d
    ```
 
 ## Usage
-
-You can run Document AI in development or production mode, or directly via the CLI after building:
+You can run Dockeeper in development, production, or directly via the CLI after building:
 
 - **Development:**
   ```sh
@@ -61,67 +59,75 @@ You can run Document AI in development or production mode, or directly via the C
   ```
 - **As a CLI Tool:**
   ```sh
-  npx document-ai [<sourceRef> [<targetRef>]]
-  ```
-  or
-  ```sh
-  docai [path] [options]
+  npx dockeeper [<sourceRef> [<targetRef>]] [options]
   ```
 
-### CLI Arguments
-- `sourceRef` (optional): The base Git ref (commit, branch, or tag) to compare from.
-- `targetRef` (optional): The target Git ref to compare to (defaults to `HEAD` if only `sourceRef` is provided).
-- `path` (optional): Path to the repository (default: current directory)
-- `-B, --base <ref>`: Base reference for comparison
-- `-H, --head <ref>`: Head reference for comparison
-- `-h, --help`: Show help message
+### CLI Options
+- `sourceRef` (optional): Base Git ref (commit, branch, or tag) to compare from.
+- `targetRef` (optional): Target Git ref to compare to (defaults to `HEAD` if only `sourceRef` is provided).
+- `--base <ref>` / `-B`: Base reference for comparison
+- `--head <ref>` / `-H`: Head reference for comparison
+- `--staged`: Analyze only staged changes
+- `--html`: Generate an HTML summary report
+- `--help` / `-h`: Show help message
 
 **Examples:**
 - Compare two specific refs:
   ```sh
-  npx document-ai main feature-branch
+  npx dockeeper main feature-branch
+  npx dockeeper -B main -H feature-branch
   ```
-  or
+- Compare a ref to HEAD:
   ```sh
-  docai -B main -H feature-branch
+  npx dockeeper 1234abcd
+  npx dockeeper -B 1234abcd
   ```
-- Compare a ref to the current HEAD:
+- Analyze staged changes only:
   ```sh
-  npx document-ai 1234abcd
+  npx dockeeper --staged
   ```
-  or
+- Generate an HTML report:
   ```sh
-  docai -B 1234abcd
-  ```
-- Default (no arguments): compares staged changes only.
-- Specify a repository path:
-  ```sh
-  docai /path/to/repo -B main -H feature
+  npx dockeeper main feature-branch --html
   ```
 
-**Note:**
-- The tool will warn you if there are unstaged or untracked changes, as these are not included in the diff calculation.
-- If no changes are found (e.g., no staged files), it will notify you and exit.
+**Notes:**
+- The tool warns if there are unstaged or untracked changes (not included in the diff).
+- If no changes are found (e.g., no staged files), it will notify and exit.
 
-The agent will analyze the specified code changes in the Git repository and update or create documentation files as needed.
+## Continuous Integration (CI)
+Dockeeper can run automatically in your CI pipeline using the included [GitHub Actions workflow](.github/workflows/dockeeper.yml):
+
+- The workflow triggers on push and pull request events to main or master.
+- It checks out the code, installs dependencies, builds the project, and runs Dockeeper.
+- If documentation files are updated, it commits changes and creates a pull request or comments on existing PRs, keeping documentation in sync with code changes.
+
+**To enable:**
+- Ensure your repository contains `.github/workflows/dockeeper.yml` (already included).
+- Set the required secrets (e.g., `OPENAI_API_KEY`) in your repository settings.
 
 ## Project Structure
 ```
-document-ai/
+dockeeper/
 ├── src/
-│   ├── agents/           # Agent and tool interfaces
-│   ├── tools/            # File and directory manipulation tools
-│   ├── git.ts            # Git integration and diff logic (now with flexible ref comparison, warnings, and path support)
-│   ├── writer-agent.ts   # Main logic for documentation updating
-│   └── index.ts          # CLI entry point (supports path, base/head, and help)
-├── package.json          # Project dependencies and scripts
-├── tsconfig.json         # TypeScript configuration
-├── README.md             # Project documentation
+│   ├── agents/                # Agent and tool interfaces
+│   ├── tools/                 # File and directory manipulation tools
+│   ├── documentation-agent.ts # Orchestrates summarization and documentation updates
+│   ├── enhanced-writer-agent.ts # AI-powered doc file updater/creator
+│   ├── summarizer-agent.ts    # AI-powered code change summarizer
+│   ├── git.ts                 # Git integration and diff logic
+│   ├── writer-agent.ts        # Documentation updating logic
+│   └── index.ts               # Refactored CLI entry point (now supports --html, --staged)
+├── .github/
+│   └── workflows/
+│       └── dockeeper.yml      # GitHub Actions workflow for documentation automation
+├── package.json               # Project dependencies and scripts
+├── tsconfig.json              # TypeScript configuration
+├── README.md                  # Project documentation
 └── ...
 ```
 
 ## Contributing
-
 Contributions are welcome! Please follow these guidelines:
 - Open issues for bugs or feature requests.
 - Submit pull requests from feature branches.
@@ -129,5 +135,4 @@ Contributions are welcome! Please follow these guidelines:
 - Add or update tests and documentation as needed.
 
 ## License
-
 This project is licensed under the MIT License.
