@@ -12,7 +12,7 @@ export class Git {
 	private isVendoredOrIgnoredFile(filePath: string): boolean {
 		const vendoredPatterns = [
 			/node_modules/,
-			/\.git/,
+			/^\.git\//,
 			/dist/,
 			/build/,
 			/coverage/,
