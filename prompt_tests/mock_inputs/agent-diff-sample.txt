@@ -1,0 +1,71 @@
+diff --git a/src/agents/agent.ts b/src/agents/agent.ts
+index 1234567..abcdefg 100644
+--- a/src/agents/agent.ts
++++ b/src/agents/agent.ts
+@@ -20,12 +20,18 @@ export class Agent {
+   // biome-ignore lint/suspicious/noExplicitAny: tools can be any type of tool
+   private readonly tools: Map<string, Tool<any>> = new Map();
++  private conversationHistory: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [];
+ 
+   constructor(config: AgentConfig) {
+     this.openai = new OpenAI({
+       apiKey: config.apiKey,
+     });
+     this.systemPrompt = config.systemPrompt;
+-    this.model = config.model ?? "gpt-4.1";
++    this.model = config.model ?? "gpt-4";
+     this.temperature = config.temperature ?? 0.7;
++    
++    // Initialize conversation with system prompt
++    this.conversationHistory = [
++      { role: "system", content: this.systemPrompt }
++    ];
+ 
+     if (config.tools) {
+       for (const tool of config.tools) {
+@@ -35,13 +41,23 @@ export class Agent {
+   }
+ 
+   async chat(
+-    message: string,
+-    conversationHistory: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [],
++    message: string
+   ): Promise<string> {
+-    const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
+-      { role: "system", content: this.systemPrompt },
+-      ...conversationHistory,
+-      { role: "user", content: message },
+-    ];
++    // Add user message to conversation history
++    this.conversationHistory.push({ role: "user", content: message });
++    
++    const response = await this.processConversation();
++    
++    // Add assistant response to conversation history
++    this.conversationHistory.push({ role: "assistant", content: response });
++    
++    return response;
++  }
++  
++  private async processConversation(): Promise<string> {
++    const messages = [...this.conversationHistory];
++    
++    // Clear conversation history to prevent it from growing too large
++    this.conversationHistory = this.conversationHistory.slice(-10);
+ 
+     const tools = Array.from(this.tools.values()).map((tool) => ({
+       type: "function" as const,
+@@ -82,6 +98,13 @@ export class Agent {
+       }
+     }
+   }
++  
++  resetConversation(): void {
++    this.conversationHistory = [
++      { role: "system", content: this.systemPrompt }
++    ];
++  }
++  
++  getConversationLength(): number {
++    return this.conversationHistory.length;
++  }
