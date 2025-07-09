@@ -1,0 +1,53 @@
+diff --git a/src/git.ts b/src/git.ts
+index 1234567..abcdefg 100644
+--- a/src/git.ts
++++ b/src/git.ts
+@@ -1,10 +1,25 @@
+ import { simpleGit, SimpleGit } from 'simple-git';
++import { existsSync } from 'node:fs';
+ 
+ export class Git {
+   private git: SimpleGit;
++  private repoPath: string;
+ 
+-  constructor() {
+-    this.git = simpleGit();
++  constructor(repoPath: string = process.cwd()) {
++    this.repoPath = repoPath;
++    
++    if (!existsSync(repoPath)) {
++      throw new Error(`Repository path does not exist: ${repoPath}`);
++    }
++    
++    this.git = simpleGit(repoPath);
+   }
+ 
++  async compareRefs(baseRef?: string, headRef?: string): Promise<{ diff: string; warnings: string[] }> {
++    const warnings: string[] = [];
++    
++    // Check for unstaged changes
++    const status = await this.git.status();
++    if (status.modified.length > 0 || status.not_added.length > 0) {
++      warnings.push(`Warning: Unstaged changes detected (${status.modified.length} modified, ${status.not_added.length} untracked files). These are not included in diff calculation.`);
++    }
++    
++    let diff: string;
++    
++    if (!baseRef && !headRef) {
++      // Compare staged changes
++      const staged = await this.git.diff(['--cached']);
++      if (!staged.trim()) {
++        warnings.push('No staged changes found to compare.');
++        return { diff: '', warnings };
++      }
++      diff = staged;
++    } else {
++      // Compare specific refs
++      const base = baseRef || 'HEAD~1';
++      const head = headRef || 'HEAD';
++      diff = await this.git.diff([`${base}...${head}`]);
++    }
++    
++    return { diff, warnings };
++  }
+ }

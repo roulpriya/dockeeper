@@ -1,5 +1,5 @@
 {
-	"name": "document-ai",
+	"name": "document-keeper",
 	"version": "1.0.0",
 	"description": "AI-powered document agent that analyzes code changes and updates documentation automatically",
 	"main": "dist/index.js",
@@ -10,10 +10,11 @@
 		"dev": "ts-node src/index.ts",
 		"lint": "biome check ./src",
 		"typecheck": "tsc --noEmit",
-		"lint:fix": "biome check --fix ./src"
+		"lint:fix": "biome check --fix ./src",
+		"test-prompts": "ts-node prompt_tests/test-runner.ts"
 	},
 	"keywords": ["ai", "documentation", "typescript", "automation"],
-	"author": "",
+	"author": "Priyambada Roul",
 	"license": "MIT",
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
