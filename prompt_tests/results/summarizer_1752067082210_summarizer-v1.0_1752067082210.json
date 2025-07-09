@@ -1,0 +1,18 @@
+{
+  "templateId": "summarizer-v1.0",
+  "testId": "summarizer_1752067082210",
+  "timestamp": "2025-07-09T13:18:02.210Z",
+  "inputs": {
+    "filename": "summarize-codebase-tool.ts",
+    "filePurpose": "source file",
+    "diffContent": "\t}\n\n\tprivate createOverallFileSummary(chunkSummaries: ChunkSummary[], filename: string): string {\n\t\tconst summaries = chunkSummaries.map(chunk => chunk.summary).join(' ');\n\t\treturn `${filename} is structured across ${chunkSummaries.length} sections: ${summaries}`;\n\t}\n\n\tprivate extractFunctions(content: string): string[] {\n\t\tconst functions: string[] = [];\n\t\tconst lines = content.split('\\n');\n\t\t\n\t\tfor (const line of lines) {\n\t\t\t// Simple regex patterns for common function declarations\n\t\t\tconst patterns = [\n\t\t\t\t/function\\s+(\\w+)/g,\n\t\t\t\t/const\\s+(\\w+)\\s*=\\s*(?:async\\s+)?(?:\\([^)]*\\)\\s*=>|\\([^)]*\\)\\s*:\\s*[^=]+=)/g,\n\t\t\t\t/(\\w+)\\s*\\([^)]*\\)\\s*{/g,\n\t\t\t\t/def\\s+(\\w+)/g, // Python\n\t\t\t\t/public\\s+\\w+\\s+(\\w+)\\s*\\(/g, // Java/C#\n\t\t\t];\n\t\t\t\n\t\t\tfor (const pattern of patterns) {\n\t\t\t\tconst matches = [...line.matchAll(pattern)];\n\t\t\t\tfor (const match of matches) {\n\t\t\t\t\tif (match[1] && !functions.includes(match[1])) {\n\t\t\t\t\t\tfunctions.push(match[1]);\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\t\n\t\treturn functions;\n\t}\n\n\tprivate extractImports(content: string): string[] {\n\t\tconst imports: string[] = [];\n\t\tconst lines = content.split('\\n');\n\t\t\n\t\tfor (const line of lines) {\n\t\t\tconst patterns = [\n\t\t\t\t/import\\s+.*?\\s+from\\s+['\"]([^'\"]+)['\"]/g,\n\t\t\t\t/import\\s+['\"]([^'\"]+)['\"]/g,\n\t\t\t\t/require\\s*\\(\\s*['\"]([^'\"]+)['\"]\\s*\\)/g,\n\t\t\t\t/from\\s+['\"]([^'\"]+)['\"]\\s+import/g, // Python\n\t\t\t];\n\t\t\t\n\t\t\tfor (const pattern of patterns) {\n\t\t\t\tconst matches = [...line.matchAll(pattern)];\n\t\t\t\tfor (const match of matches) {\n\t\t\t\t\tif (match[1] && !imports.includes(match[1])) {",
+    "existingDocContext": ""
+  },
+  "output": "{\n  \"change_type\": \"new_feature\",\n  \"filename\": \"summarize-codebase-tool.ts\",\n  \"file_purpose\": \"source file\",\n  \"key_changes\": [\n    \"Added a method 'createOverallFileSummary' that generates a summary of the file structure based on the provided chunk summaries.\",\n    \"Added a method 'extractFunctions' that extracts function names from the content string using regular expressions.\",\n    \"Added a method 'extractImports' that extracts import statements from the content string using regular expressions.\"\n  ],\n  \"impact_areas\": [\n    \"usage\",\n    \"api_reference\"\n  ],\n  \"new_dependencies\": [],\n  \"breaking_changes\": [],\n  \"documentation_recommendations\": {\n    \"readme\": \"Include information about the new methods 'createOverallFileSummary', 'extractFunctions', and 'extractImports' in the usage section. Explain what each method does and provide examples of their usage.\",\n    \"api_docs\": \"Add detailed descriptions and examples for the new methods 'createOverallFileSummary', 'extractFunctions', and 'extractImports'. Include information about the parameters they accept and the values they return.\",\n    \"changelog\": \"Mention the addition of the new methods 'createOverallFileSummary', 'extractFunctions', and 'extractImports' in the latest version.\"\n  }\n}",
+  "metrics": {
+    "completeness": 1,
+    "accuracy": 0.8,
+    "consistency": 0.9,
+    "responseTime": 16118
+  }
+}

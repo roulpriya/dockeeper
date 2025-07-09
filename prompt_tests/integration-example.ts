@@ -9,14 +9,19 @@ import { join } from 'node:path';
  * This shows how the two agents work together to process code changes
  */
 
-async function demonstrateChaining() {
-  console.log('🔗 Demonstrating Agent Chaining: Summarizer → Doc Writer\n');
-  
+function validateApiKey(): string {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
     console.error('❌ OPENAI_API_KEY environment variable is required');
     process.exit(1);
   }
+  return apiKey;
+}
+
+async function demonstrateChaining() {
+  console.log('🔗 Demonstrating Agent Chaining: Summarizer → Doc Writer\n');
+  
+  const apiKey = validateApiKey();
 
   const docService = createDocumentationService(apiKey);
 
@@ -100,11 +105,7 @@ async function demonstrateChaining() {
 async function demonstrateABTesting() {
   console.log('\n\n🧪 A/B Testing Different Prompt Templates\n');
   
-  const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) {
-    console.error('❌ OPENAI_API_KEY environment variable is required');
-    process.exit(1);
-  }
+  const apiKey = validateApiKey();
 
   const docService = createDocumentationService(apiKey);
 

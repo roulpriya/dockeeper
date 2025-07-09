@@ -1,0 +1,18 @@
+{
+  "templateId": "summarizer-v1.0",
+  "testId": "summarizer_1752067035833",
+  "timestamp": "2025-07-09T13:17:15.833Z",
+  "inputs": {
+    "filename": "summarize-codebase-tool.ts",
+    "filePurpose": "source file",
+    "diffContent": "\tprivate summaryStorage: any;\n\n\tconstructor(apiKey: string, chunkSize: number, ignoreManager: any, maxDepth: number, summaryStorage: any) {\n\t\t// Initialize prompt manager with default templates\n\t\tpromptManager.loadDefaultTemplates();\n\t\t\n\t\tthis.summarizerAgent = createSummarizerAgent(apiKey);\n\t\tthis.fileChunker = new FileChunker(chunkSize);\n\t\tthis.scanner = new CodebaseFileScanner(ignoreManager, maxDepth);\n\t\tthis.summaryStorage = summaryStorage;\n\t}\n\n\tasync summarizeCodebase(rootPath: string): Promise<CodebaseSummary> {\n\t\tconst files = await this.scanner.scanFiles(rootPath);\n\t\tconst fileSummaries: FileSummary[] = [];\n\t\tlet processedFiles = 0;\n\t\tlet skippedFiles = 0;\n\n\t\tconsole.log(`Found ${files.length} files to process`);\n\n\t\tfor (const filePath of files) {\n\t\t\ttry {\n\t\t\t\t// Check if we have a cached summary first\n\t\t\t\tconst cached = await this.summaryStorage.getCachedSummary(filePath);\n\t\t\t\tif (cached) {\n\t\t\t\t\tfileSummaries.push({\n\t\t\t\t\t\tfilename: cached.relativePath.split('/').pop() || '',\n\t\t\t\t\t\trelativePath: cached.relativePath,\n\t\t\t\t\t\tsummary: cached.summary,\n\t\t\t\t\t\tkeyFunctions: cached.keyFunctions,\n\t\t\t\t\t\tdependencies: cached.dependencies,\n\t\t\t\t\t\texportedSymbols: cached.exportedSymbols,\n\t\t\t\t\t\tchunkSummaries: cached.chunkSummaries\n\t\t\t\t\t});\n\t\t\t\t\tprocessedFiles++;\n\t\t\t\t\tcontinue;\n\t\t\t\t}\n\n\t\t\t\tconst summary = await this.summarizeFile(filePath, rootPath);\n\t\t\t\tif (summary) {\n\t\t\t\t\tfileSummaries.push(summary);\n\t\t\t\t\tprocessedFiles++;\n\t\t\t\t\t\n\t\t\t\t\t// Store the summary in cache\n\t\t\t\t\tawait this.summaryStorage.storeSummary(filePath, {\n\t\t\t\t\t\trelativePath: summary.relativePath,\n\t\t\t\t\t\tsummary: summary.summary,\n\t\t\t\t\t\tkeyFunctions: summary.keyFunctions,\n\t\t\t\t\t\tdependencies: summary.dependencies,\n\t\t\t\t\t\texportedSymbols: summary.exportedSymbols,",
+    "existingDocContext": ""
+  },
+  "output": "{\n  \"change_type\": \"new_feature\",\n  \"filename\": \"summarize-codebase-tool.ts\",\n  \"file_purpose\": \"source file\",\n  \"key_changes\": [\n    \"Added a new constructor to initialize the summarizer agent, file chunker, codebase file scanner, and summary storage.\",\n    \"Introduced a new async function 'summarizeCodebase' that scans files, checks for cached summaries, and processes file summaries.\",\n    \"Implemented caching mechanism for file summaries to improve performance.\"\n  ],\n  \"impact_areas\": [\n    \"usage\",\n    \"api_reference\",\n    \"configuration\"\n  ],\n  \"new_dependencies\": [],\n  \"breaking_changes\": [],\n  \"documentation_recommendations\": {\n    \"readme\": \"Include a section explaining the new 'summarizeCodebase' function and how to use it. Also, describe the caching mechanism for file summaries.\",\n    \"api_docs\": \"Update the API documentation to include the new constructor and the 'summarizeCodebase' function. Also, document the structure of the file summary object.\",\n    \"changelog\": \"Add a new entry for the addition of the 'summarizeCodebase' function and the implementation of the caching mechanism for file summaries.\"\n  }\n}",
+  "metrics": {
+    "completeness": 1,
+    "accuracy": 0.8,
+    "consistency": 0.9,
+    "responseTime": 14929
+  }
+}

@@ -84,8 +84,8 @@ export class SummarizerAgent extends Agent {
 				output: response,
 				metrics: {
 					completeness: this.calculateCompleteness(summary),
-					accuracy: 0.8, // Would need human evaluation
-					consistency: 0.9, // Would need comparison with other results
+					accuracy: 0, // Would need human evaluation
+					consistency: 0, // Would need comparison with other results
 					responseTime: Date.now() - startTime,
 				},
 			});

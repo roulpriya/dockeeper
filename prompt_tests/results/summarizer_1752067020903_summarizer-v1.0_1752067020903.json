@@ -1,0 +1,18 @@
+{
+  "templateId": "summarizer-v1.0",
+  "testId": "summarizer_1752067020903",
+  "timestamp": "2025-07-09T13:17:00.903Z",
+  "inputs": {
+    "filename": "summarize-codebase-tool.ts",
+    "filePurpose": "source file",
+    "diffContent": "\t\t\t\t\tawait this.scanDirectory(fullPath, currentDepth + 1, files);\n\t\t\t\t} else if (stats.isFile() && this.isSupportedFile(item)) {\n\t\t\t\t\tfiles.push(fullPath);\n\t\t\t\t}\n\t\t\t}\n\t\t} catch (error) {\n\t\t\tconsole.warn(`Error scanning directory ${dirPath}:`, error);\n\t\t}\n\t}\n\n\tprivate isSupportedFile(filename: string): boolean {\n\t\tconst ext = extname(filename).toLowerCase();\n\t\treturn SUPPORTED_EXTENSIONS.includes(ext);\n\t}\n}\n\nclass FileChunker {\n\tpublic chunkSize: number;\n\n\tconstructor(chunkSize: number = 100) {\n\t\tthis.chunkSize = chunkSize;\n\t}\n\n\tasync chunkFile(filePath: string): Promise<{ content: string; chunks: string[] }> {\n\t\ttry {\n\t\t\tconst content = await fs.readFile(filePath, 'utf-8');\n\t\t\tconst lines = content.split('\\n');\n\t\t\t\n\t\t\tif (lines.length <= this.chunkSize) {\n\t\t\t\treturn { content, chunks: [content] };\n\t\t\t}\n\n\t\t\tconst chunks: string[] = [];\n\t\t\tfor (let i = 0; i < lines.length; i += this.chunkSize) {\n\t\t\t\tconst chunk = lines.slice(i, i + this.chunkSize).join('\\n');\n\t\t\t\tchunks.push(chunk);\n\t\t\t}\n\n\t\t\treturn { content, chunks };\n\t\t} catch (error) {\n\t\t\tconsole.warn(`Error chunking file ${filePath}:`, error);\n\t\t\treturn { content: '', chunks: [] };\n\t\t}\n\t}\n}\n\nclass CodebaseSummarizer {\n\tprivate summarizerAgent: any;\n\tprivate fileChunker: FileChunker;\n\tprivate scanner: CodebaseFileScanner;",
+    "existingDocContext": ""
+  },
+  "output": "{\n  \"change_type\": \"new_feature\",\n  \"filename\": \"summarize-codebase-tool.ts\",\n  \"file_purpose\": \"source file\",\n  \"key_changes\": [\n    \"Added a new class 'FileChunker' that chunks a file into smaller parts based on a specified chunk size\",\n    \"Added a new method 'chunkFile' in 'FileChunker' class that reads a file, splits it into lines, and groups these lines into chunks\",\n    \"Added error handling in 'chunkFile' method to catch and log any errors during the file reading and chunking process\",\n    \"Updated 'CodebaseSummarizer' class to include a new 'fileChunker' property of type 'FileChunker'\"\n  ],\n  \"impact_areas\": [\n    \"usage\",\n    \"api_reference\"\n  ],\n  \"new_dependencies\": [],\n  \"breaking_changes\": [],\n  \"documentation_recommendations\": {\n    \"readme\": \"Add a section explaining the new 'FileChunker' class and its usage. Include details about the 'chunkFile' method and how it can be used to split a file into smaller chunks\",\n    \"api_docs\": \"Update the 'CodebaseSummarizer' class documentation to include the new 'fileChunker' property. Add a new section for the 'FileChunker' class detailing its constructor and the 'chunkFile' method\",\n    \"changelog\": \"Add an entry for the new feature addition - 'FileChunker' class and its method 'chunkFile'. Mention the update to 'CodebaseSummarizer' class to include 'fileChunker' property\"\n  }\n}",
+  "metrics": {
+    "completeness": 1,
+    "accuracy": 0.8,
+    "consistency": 0.9,
+    "responseTime": 18418
+  }
+}

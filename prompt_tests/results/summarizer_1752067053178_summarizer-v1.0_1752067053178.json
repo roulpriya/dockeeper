@@ -1,0 +1,18 @@
+{
+  "templateId": "summarizer-v1.0",
+  "testId": "summarizer_1752067053178",
+  "timestamp": "2025-07-09T13:17:33.178Z",
+  "inputs": {
+    "filename": "summarize-codebase-tool.ts",
+    "filePurpose": "source file",
+    "diffContent": "\t\t\t\t\t\tchunkSummaries: summary.chunkSummaries,\n\t\t\t\t\t\ttimestamp: new Date().toISOString()\n\t\t\t\t\t});\n\t\t\t\t} else {\n\t\t\t\t\tskippedFiles++;\n\t\t\t\t}\n\t\t\t} catch (error) {\n\t\t\t\tconsole.warn(`Error processing file ${filePath}:`, error);\n\t\t\t\tskippedFiles++;\n\t\t\t}\n\t\t}\n\n\t\t// Save cache after processing\n\t\tawait this.summaryStorage.saveCache();\n\n\t\tconst overallStructure = this.generateOverallStructure(fileSummaries);\n\t\tconst keyComponents = this.extractKeyComponents(fileSummaries);\n\t\tconst dependencies = this.extractDependencies(fileSummaries);\n\n\t\treturn {\n\t\t\ttotalFiles: files.length,\n\t\t\tprocessedFiles,\n\t\t\tskippedFiles,\n\t\t\tfileSummaries,\n\t\t\toverallStructure,\n\t\t\tkeyComponents,\n\t\t\tdependencies,\n\t\t\ttimestamp: new Date().toISOString()\n\t\t};\n\t}\n\n\tprivate async summarizeFile(filePath: string, rootPath: string): Promise<FileSummary | null> {\n\t\tconst { content, chunks } = await this.fileChunker.chunkFile(filePath);\n\t\t\n\t\tif (!content) {\n\t\t\treturn null;\n\t\t}\n\n\t\tconst relativePath = relative(rootPath, filePath);\n\t\tconst filename = relativePath.split('/').pop() || '';\n\t\t\n\t\t// Extract basic information\n\t\tconst keyFunctions = this.extractFunctions(content);\n\t\tconst dependencies = this.extractDependencies([{ dependencies: this.extractImports(content) } as any]);\n\t\tconst exportedSymbols = this.extractExports(content);\n\n\t\tlet summary: string;\n\t\tlet chunkSummaries: ChunkSummary[] = [];\n\n\t\tif (chunks.length === 1) {",
+    "existingDocContext": ""
+  },
+  "output": "{\n  \"change_type\": \"refactoring\",\n  \"filename\": \"summarize-codebase-tool.ts\",\n  \"file_purpose\": \"source file\",\n  \"key_changes\": [\n    \"Added a timestamp to the final return object in the main function\",\n    \"Refactored the file processing logic to include error handling and increment a 'skippedFiles' counter\",\n    \"Added logic to save cache after processing\",\n    \"Added extraction of overall structure, key components, and dependencies from file summaries\",\n    \"Refactored the 'summarizeFile' function to include extraction of basic information such as key functions, dependencies, and exported symbols\"\n  ],\n  \"impact_areas\": [\n    \"usage\",\n    \"api_reference\"\n  ],\n  \"new_dependencies\": [],\n  \"breaking_changes\": [],\n  \"documentation_recommendations\": {\n    \"readme\": \"Update the usage section to reflect the new return object structure, including the addition of a timestamp. Mention the new error handling for file processing and the 'skippedFiles' counter.\",\n    \"api_docs\": \"Update the 'summarizeFile' function documentation to include the new extraction of basic information. Also, update the documentation for the main function to reflect the new logic for saving cache and extracting overall structure, key components, and dependencies from file summaries.\",\n    \"changelog\": \"Mention the refactoring of the file processing logic and the 'summarizeFile' function. Highlight the addition of a timestamp to the return object and the new extraction of overall structure, key components, and dependencies from file summaries.\"\n  }\n}",
+  "metrics": {
+    "completeness": 1,
+    "accuracy": 0.8,
+    "consistency": 0.9,
+    "responseTime": 17344
+  }
+}

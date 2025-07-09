@@ -1,0 +1,668 @@
+{
+	"version": "1.0.0",
+	"rootPath": "/Users/priyaroul/Code/dockeeper/src",
+	"summaries": {
+		"/Users/priyaroul/Code/dockeeper/src/agents/agent.ts": {
+			"relativePath": "agents/agent.ts",
+			"summary": "agent.ts is structured across 3 sections: File contains 50 lines of code File contains 50 lines of code File contains 20 lines of code",
+			"keyFunctions": ["constructor", "if", "for", "while", "catch"],
+			"dependencies": ["openai"],
+			"exportedSymbols": ["Agent"],
+			"chunkSummaries": [
+				{
+					"startLine": 1,
+					"endLine": 50,
+					"summary": "File contains 50 lines of code",
+					"functions": ["constructor", "if", "for"]
+				},
+				{
+					"startLine": 51,
+					"endLine": 100,
+					"summary": "File contains 50 lines of code",
+					"functions": ["while", "if", "for"]
+				},
+				{
+					"startLine": 101,
+					"endLine": 120,
+					"summary": "File contains 20 lines of code",
+					"functions": ["catch"]
+				}
+			],
+			"timestamp": "2025-07-09T13:15:08.245Z",
+			"filePath": "/Users/priyaroul/Code/dockeeper/src/agents/agent.ts",
+			"contentHash": "13687ef405a4001ae80a0eede405e648b33bf37e8930997c839f898ec738cd34",
+			"lastModified": "2025-07-09T12:16:12.115Z"
+		},
+		"/Users/priyaroul/Code/dockeeper/src/agents/doc-writer-agent.ts": {
+			"relativePath": "agents/doc-writer-agent.ts",
+			"summary": "doc-writer-agent.ts is structured across 5 sections: File contains 50 lines of code File contains 50 lines of code File contains 50 lines of code File contains 50 lines of code File contains 22 lines of code",
+			"keyFunctions": ["constructor", "catch", "if", "createDocWriterAgent"],
+			"dependencies": [],
+			"exportedSymbols": ["DocWriterAgent", "createDocWriterAgent"],
+			"chunkSummaries": [
+				{
+					"startLine": 1,
+					"endLine": 50,
+					"summary": "File contains 50 lines of code",
+					"functions": ["constructor"]
+				},
+				{
+					"startLine": 51,
+					"endLine": 100,
+					"summary": "File contains 50 lines of code",
+					"functions": ["catch", "if"]
+				},
+				{
+					"startLine": 101,
+					"endLine": 150,
+					"summary": "File contains 50 lines of code",
+					"functions": ["if"]
+				},
+				{
+					"startLine": 151,
+					"endLine": 200,
+					"summary": "File contains 50 lines of code",
+					"functions": []
+				},
+				{
+					"startLine": 201,
+					"endLine": 222,
+					"summary": "File contains 22 lines of code",
+					"functions": ["createDocWriterAgent"]
+				}
+			],
+			"timestamp": "2025-07-09T13:15:08.248Z",
+			"filePath": "/Users/priyaroul/Code/dockeeper/src/agents/doc-writer-agent.ts",
+			"contentHash": "e08b3dcb4af27f5d8e0b69d0357368c293218b8a81985328bf73a3f9c3f404cf",
+			"lastModified": "2025-07-09T12:42:36.790Z"
+		},
+		"/Users/priyaroul/Code/dockeeper/src/agents/index.ts": {
+			"relativePath": "agents/index.ts",
+			"summary": "File contains 3 lines of code",
+			"keyFunctions": [],
+			"dependencies": [],
+			"exportedSymbols": [
+				"Agent",
+				"AgentConfig",
+				"Tool",
+				"ToolCall",
+				"ToolResult"
+			],
+			"timestamp": "2025-07-09T13:15:08.248Z",
+			"filePath": "/Users/priyaroul/Code/dockeeper/src/agents/index.ts",
+			"contentHash": "fc283a2c99560680735188719a2e1a017500754134e61627289cea606dbb80de",
+			"lastModified": "2025-07-09T12:16:12.115Z"
+		},
+		"/Users/priyaroul/Code/dockeeper/src/agents/summarizer-agent.ts": {
+			"relativePath": "agents/summarizer-agent.ts",
+			"summary": "summarizer-agent.ts is structured across 3 sections: File contains 50 lines of code File contains 50 lines of code File contains 40 lines of code",
+			"keyFunctions": ["constructor", "catch", "createSummarizerAgent"],
+			"dependencies": [],
+			"exportedSymbols": ["SummarizerAgent", "createSummarizerAgent"],
+			"chunkSummaries": [
+				{
+					"startLine": 1,
+					"endLine": 50,
+					"summary": "File contains 50 lines of code",
+					"functions": ["constructor"]
+				},
+				{
+					"startLine": 51,
+					"endLine": 100,
+					"summary": "File contains 50 lines of code",
+					"functions": ["catch"]
+				},
+				{
+					"startLine": 101,
+					"endLine": 140,
+					"summary": "File contains 40 lines of code",
+					"functions": ["createSummarizerAgent"]
+				}
+			],
+			"timestamp": "2025-07-09T13:15:08.250Z",
+			"filePath": "/Users/priyaroul/Code/dockeeper/src/agents/summarizer-agent.ts",
+			"contentHash": "b724b7f98f4f549e4bcd3089a5aba4ad47f351cd742c44b3df2be08029c92dd6",
+			"lastModified": "2025-07-09T12:42:23.072Z"
+		},
+		"/Users/priyaroul/Code/dockeeper/src/agents/tool.ts": {
+			"relativePath": "agents/tool.ts",
+			"summary": "File contains 25 lines of code",
+			"keyFunctions": [],
+			"dependencies": [],
+			"exportedSymbols": [],
+			"timestamp": "2025-07-09T13:15:08.250Z",
+			"filePath": "/Users/priyaroul/Code/dockeeper/src/agents/tool.ts",
+			"contentHash": "65e3e873d5bc75619fff0dc4bd21381731bc258f39f7c51da76634f9e1c0338d",
+			"lastModified": "2025-07-09T12:16:12.115Z"
+		},
+		"/Users/priyaroul/Code/dockeeper/src/documentation-service.ts": {
+			"relativePath": "documentation-service.ts",
+			"summary": "documentation-service.ts is structured across 5 sections: File contains 50 lines of code File contains 50 lines of code File contains 50 lines of code File contains 50 lines of code File contains 49 lines of code",
+			"keyFunctions": [
+				"constructor",
+				"if",
+				"catch",
+				"for",
+				"createDocumentationService"
+			],
+			"dependencies": ["node:fs", "node:path"],
+			"exportedSymbols": ["DocumentationService", "createDocumentationService"],
+			"chunkSummaries": [
+				{
+					"startLine": 1,
+					"endLine": 50,
+					"summary": "File contains 50 lines of code",
+					"functions": ["constructor"]
+				},
+				{
+					"startLine": 51,
+					"endLine": 100,
+					"summary": "File contains 50 lines of code",
+					"functions": ["if"]
+				},
+				{
+					"startLine": 101,
+					"endLine": 150,
+					"summary": "File contains 50 lines of code",
+					"functions": ["catch"]
+				},
+				{
+					"startLine": 151,
+					"endLine": 200,
+					"summary": "File contains 50 lines of code",
+					"functions": []
+				},
+				{
+					"startLine": 201,
+					"endLine": 249,
+					"summary": "File contains 49 lines of code",
+					"functions": ["for", "createDocumentationService"]
+				}
+			],
+			"timestamp": "2025-07-09T13:15:08.253Z",
+			"filePath": "/Users/priyaroul/Code/dockeeper/src/documentation-service.ts",
+			"contentHash": "5fa4a2d13d39be0cfeeb2d6a5b48879b0ce0cdeb3e2d0051f38fdaadf5ad2ede",
+			"lastModified": "2025-07-09T12:42:23.076Z"
+		},
+		"/Users/priyaroul/Code/dockeeper/src/git.ts": {
+			"relativePath": "git.ts",
+			"summary": "git.ts is structured across 6 sections: File contains 50 lines of code File contains 50 lines of code File contains 50 lines of code File contains 50 lines of code File contains 50 lines of code File contains 3 lines of code",
+			"keyFunctions": ["if", "catch", "for"],
+			"dependencies": ["node:fs", "node:path", "simple-git"],
+			"exportedSymbols": ["Git"],
+			"chunkSummaries": [
+				{
+					"startLine": 1,
+					"endLine": 50,
+					"summary": "File contains 50 lines of code",
+					"functions": []
+				},
+				{
+					"startLine": 51,
+					"endLine": 100,
+					"summary": "File contains 50 lines of code",
+					"functions": ["if"]
+				},
+				{
+					"startLine": 101,
+					"endLine": 150,
+					"summary": "File contains 50 lines of code",
+					"functions": ["if"]
+				},
+				{
+					"startLine": 151,
+					"endLine": 200,
+					"summary": "File contains 50 lines of code",
+					"functions": ["if"]
+				},
+				{
+					"startLine": 201,
+					"endLine": 250,
+					"summary": "File contains 50 lines of code",
+					"functions": ["catch", "if", "for"]
+				},
+				{
+					"startLine": 251,
+					"endLine": 253,
+					"summary": "File contains 3 lines of code",
+					"functions": []
+				}
+			],
+			"timestamp": "2025-07-09T13:15:08.255Z",
+			"filePath": "/Users/priyaroul/Code/dockeeper/src/git.ts",
+			"contentHash": "3909a250fcb74676d09fa71b16665306b7b876ac4c351602bc942bd127465ba7",
+			"lastModified": "2025-07-09T12:16:12.115Z"
+		},
+		"/Users/priyaroul/Code/dockeeper/src/index.ts": {
+			"relativePath": "index.ts",
+			"summary": "index.ts is structured across 3 sections: File contains 50 lines of code File contains 50 lines of code File contains 18 lines of code",
+			"keyFunctions": ["showHelp", "parseArgs", "while", "if", "main", "catch"],
+			"dependencies": ["dotenv/config.js", "node:fs"],
+			"exportedSymbols": [],
+			"chunkSummaries": [
+				{
+					"startLine": 1,
+					"endLine": 50,
+					"summary": "File contains 50 lines of code",
+					"functions": ["showHelp", "parseArgs", "while", "if"]
+				},
+				{
+					"startLine": 51,
+					"endLine": 100,
+					"summary": "File contains 50 lines of code",
+					"functions": ["if", "main"]
+				},
+				{
+					"startLine": 101,
+					"endLine": 118,
+					"summary": "File contains 18 lines of code",
+					"functions": ["catch", "if"]
+				}
+			],
+			"timestamp": "2025-07-09T13:15:08.259Z",
+			"filePath": "/Users/priyaroul/Code/dockeeper/src/index.ts",
+			"contentHash": "6b5d2a05bfcdd6847f5c790d7f3700d7c93e048d5378890dba34aeead67aa4bf",
+			"lastModified": "2025-07-09T12:16:12.116Z"
+		},
+		"/Users/priyaroul/Code/dockeeper/src/prompt-manager.ts": {
+			"relativePath": "prompt-manager.ts",
+			"summary": "prompt-manager.ts is structured across 8 sections: File contains 50 lines of code File contains 50 lines of code File contains 50 lines of code File contains 50 lines of code File contains 50 lines of code File contains 50 lines of code File contains 50 lines of code File contains 8 lines of code",
+			"keyFunctions": ["constructor", "if", "for", "catch"],
+			"dependencies": ["node:fs", "node:path"],
+			"exportedSymbols": ["PromptManager", "promptManager"],
+			"chunkSummaries": [
+				{
+					"startLine": 1,
+					"endLine": 50,
+					"summary": "File contains 50 lines of code",
+					"functions": ["constructor"]
+				},
+				{
+					"startLine": 51,
+					"endLine": 100,
+					"summary": "File contains 50 lines of code",
+					"functions": ["if"]
+				},
+				{
+					"startLine": 101,
+					"endLine": 150,
+					"summary": "File contains 50 lines of code",
+					"functions": ["for", "catch"]
+				},
+				{
+					"startLine": 151,
+					"endLine": 200,
+					"summary": "File contains 50 lines of code",
+					"functions": ["if"]
+				},
+				{
+					"startLine": 201,
+					"endLine": 250,
+					"summary": "File contains 50 lines of code",
+					"functions": []
+				},
+				{
+					"startLine": 251,
+					"endLine": 300,
+					"summary": "File contains 50 lines of code",
+					"functions": []
+				},
+				{
+					"startLine": 301,
+					"endLine": 350,
+					"summary": "File contains 50 lines of code",
+					"functions": []
+				},
+				{
+					"startLine": 351,
+					"endLine": 358,
+					"summary": "File contains 8 lines of code",
+					"functions": []
+				}
+			],
+			"timestamp": "2025-07-09T13:15:08.264Z",
+			"filePath": "/Users/priyaroul/Code/dockeeper/src/prompt-manager.ts",
+			"contentHash": "e87059d0c4886881a51c976b266572e4dd72ec8290f03e0d89650a138be8d1ab",
+			"lastModified": "2025-07-09T12:43:54.066Z"
+		},
+		"/Users/priyaroul/Code/dockeeper/src/tools/index.ts": {
+			"relativePath": "tools/index.ts",
+			"summary": "File contains 6 lines of code",
+			"keyFunctions": [],
+			"dependencies": [],
+			"exportedSymbols": [
+				"readTool ",
+				"writeTool ",
+				"treeTool ",
+				"lsTool ",
+				"summarizeCodebaseTool "
+			],
+			"timestamp": "2025-07-09T13:15:08.268Z",
+			"filePath": "/Users/priyaroul/Code/dockeeper/src/tools/index.ts",
+			"contentHash": "a83ba270ed323d3f7a90f98170c35189594b19e40f1c1c9023f0410758bfd670",
+			"lastModified": "2025-07-09T13:12:08.604Z"
+		},
+		"/Users/priyaroul/Code/dockeeper/src/tools/ls-tool.ts": {
+			"relativePath": "tools/ls-tool.ts",
+			"summary": "ls-tool.ts is structured across 3 sections: File contains 50 lines of code File contains 50 lines of code File contains 10 lines of code",
+			"keyFunctions": ["lsHandler", "for", "if", "catch"],
+			"dependencies": ["node:fs", "node:path"],
+			"exportedSymbols": ["lsTool"],
+			"chunkSummaries": [
+				{
+					"startLine": 1,
+					"endLine": 50,
+					"summary": "File contains 50 lines of code",
+					"functions": ["lsHandler", "for", "if"]
+				},
+				{
+					"startLine": 51,
+					"endLine": 100,
+					"summary": "File contains 50 lines of code",
+					"functions": ["catch"]
+				},
+				{
+					"startLine": 101,
+					"endLine": 110,
+					"summary": "File contains 10 lines of code",
+					"functions": []
+				}
+			],
+			"timestamp": "2025-07-09T13:15:08.275Z",
+			"filePath": "/Users/priyaroul/Code/dockeeper/src/tools/ls-tool.ts",
+			"contentHash": "58f3636190e3cf31326c3de066e4809cfdf1e7738c3e4f6140b2e92d06baf19f",
+			"lastModified": "2025-07-09T12:16:12.116Z"
+		},
+		"/Users/priyaroul/Code/dockeeper/src/tools/read-tool.ts": {
+			"relativePath": "tools/read-tool.ts",
+			"summary": "File contains 46 lines of code",
+			"keyFunctions": ["readFileHandler", "catch"],
+			"dependencies": ["node:fs", "node:path"],
+			"exportedSymbols": ["readTool"],
+			"timestamp": "2025-07-09T13:15:08.278Z",
+			"filePath": "/Users/priyaroul/Code/dockeeper/src/tools/read-tool.ts",
+			"contentHash": "04ed7761c9a003225be582938ad876d14269ae740b67144001f65dbad064a12a",
+			"lastModified": "2025-07-09T12:16:12.116Z"
+		},
+		"/Users/priyaroul/Code/dockeeper/src/tools/summarize-codebase-tool.ts": {
+			"relativePath": "tools/summarize-codebase-tool.ts",
+			"summary": "summarize-codebase-tool.ts is structured across 12 sections: File contains 50 lines of code File contains 50 lines of code File contains 50 lines of code File contains 50 lines of code File contains 50 lines of code File contains 50 lines of code File contains 50 lines of code File contains 50 lines of code File contains 50 lines of code File contains 50 lines of code File contains 50 lines of code File contains 6 lines of code",
+			"keyFunctions": [
+				"constructor",
+				"if",
+				"for",
+				"catch",
+				"declarations",
+				"summarizeCodebaseHandler"
+			],
+			"dependencies": ["node:fs", "node:path"],
+			"exportedSymbols": ["summarizeCodebaseTool"],
+			"chunkSummaries": [
+				{
+					"startLine": 1,
+					"endLine": 50,
+					"summary": "File contains 50 lines of code",
+					"functions": []
+				},
+				{
+					"startLine": 51,
+					"endLine": 100,
+					"summary": "File contains 50 lines of code",
+					"functions": ["constructor", "if", "for"]
+				},
+				{
+					"startLine": 101,
+					"endLine": 150,
+					"summary": "File contains 50 lines of code",
+					"functions": ["catch", "constructor", "if", "for"]
+				},
+				{
+					"startLine": 151,
+					"endLine": 200,
+					"summary": "File contains 50 lines of code",
+					"functions": ["constructor", "for", "if"]
+				},
+				{
+					"startLine": 201,
+					"endLine": 250,
+					"summary": "File contains 50 lines of code",
+					"functions": ["catch", "if"]
+				},
+				{
+					"startLine": 251,
+					"endLine": 300,
+					"summary": "File contains 50 lines of code",
+					"functions": ["for", "catch"]
+				},
+				{
+					"startLine": 301,
+					"endLine": 350,
+					"summary": "File contains 50 lines of code",
+					"functions": ["for", "declarations"]
+				},
+				{
+					"startLine": 351,
+					"endLine": 400,
+					"summary": "File contains 50 lines of code",
+					"functions": ["for", "if"]
+				},
+				{
+					"startLine": 401,
+					"endLine": 450,
+					"summary": "File contains 50 lines of code",
+					"functions": ["if", "for"]
+				},
+				{
+					"startLine": 451,
+					"endLine": 500,
+					"summary": "File contains 50 lines of code",
+					"functions": ["for", "summarizeCodebaseHandler", "if"]
+				},
+				{
+					"startLine": 501,
+					"endLine": 550,
+					"summary": "File contains 50 lines of code",
+					"functions": ["catch"]
+				},
+				{
+					"startLine": 551,
+					"endLine": 556,
+					"summary": "File contains 6 lines of code",
+					"functions": []
+				}
+			],
+			"timestamp": "2025-07-09T13:15:08.287Z",
+			"filePath": "/Users/priyaroul/Code/dockeeper/src/tools/summarize-codebase-tool.ts",
+			"contentHash": "b3d9436111bfc08d004ab97a6f708474b50303a3df35cf053fcfa9c8a2dba2c0",
+			"lastModified": "2025-07-09T13:14:17.036Z"
+		},
+		"/Users/priyaroul/Code/dockeeper/src/tools/tree-tool.ts": {
+			"relativePath": "tools/tree-tool.ts",
+			"summary": "tree-tool.ts is structured across 4 sections: File contains 50 lines of code File contains 50 lines of code File contains 50 lines of code File contains 20 lines of code",
+			"keyFunctions": [
+				"buildTree",
+				"if",
+				"for",
+				"catch",
+				"formatTreeDFS",
+				"traverse",
+				"treeHandler"
+			],
+			"dependencies": ["node:fs", "node:path"],
+			"exportedSymbols": ["treeTool"],
+			"chunkSummaries": [
+				{
+					"startLine": 1,
+					"endLine": 50,
+					"summary": "File contains 50 lines of code",
+					"functions": ["buildTree", "if", "for"]
+				},
+				{
+					"startLine": 51,
+					"endLine": 100,
+					"summary": "File contains 50 lines of code",
+					"functions": [
+						"if",
+						"catch",
+						"formatTreeDFS",
+						"traverse",
+						"for",
+						"treeHandler"
+					]
+				},
+				{
+					"startLine": 101,
+					"endLine": 150,
+					"summary": "File contains 50 lines of code",
+					"functions": ["catch"]
+				},
+				{
+					"startLine": 151,
+					"endLine": 170,
+					"summary": "File contains 20 lines of code",
+					"functions": []
+				}
+			],
+			"timestamp": "2025-07-09T13:15:08.288Z",
+			"filePath": "/Users/priyaroul/Code/dockeeper/src/tools/tree-tool.ts",
+			"contentHash": "17726967dfeffb39a91a5eed7ccffb5bf64128a6a826727734d984c50e2b72a1",
+			"lastModified": "2025-07-09T12:16:12.116Z"
+		},
+		"/Users/priyaroul/Code/dockeeper/src/tools/write-tool.ts": {
+			"relativePath": "tools/write-tool.ts",
+			"summary": "write-tool.ts is structured across 2 sections: File contains 50 lines of code File contains 11 lines of code",
+			"keyFunctions": ["writeFileHandler", "if", "catch"],
+			"dependencies": ["node:fs", "node:path"],
+			"exportedSymbols": ["writeTool"],
+			"chunkSummaries": [
+				{
+					"startLine": 1,
+					"endLine": 50,
+					"summary": "File contains 50 lines of code",
+					"functions": ["writeFileHandler", "if", "catch"]
+				},
+				{
+					"startLine": 51,
+					"endLine": 61,
+					"summary": "File contains 11 lines of code",
+					"functions": []
+				}
+			],
+			"timestamp": "2025-07-09T13:15:08.289Z",
+			"filePath": "/Users/priyaroul/Code/dockeeper/src/tools/write-tool.ts",
+			"contentHash": "80f10c5137563343b744a6125bf94ba4810db120ec12d8da04a932122b677a45",
+			"lastModified": "2025-07-09T12:16:12.116Z"
+		},
+		"/Users/priyaroul/Code/dockeeper/src/utils/ignore-patterns.ts": {
+			"relativePath": "utils/ignore-patterns.ts",
+			"summary": "ignore-patterns.ts is structured across 3 sections: File contains 50 lines of code File contains 50 lines of code File contains 9 lines of code",
+			"keyFunctions": ["constructor", "catch", "createIgnorePatternManager"],
+			"dependencies": ["node:fs", "node:path"],
+			"exportedSymbols": ["IgnorePatternManager"],
+			"chunkSummaries": [
+				{
+					"startLine": 1,
+					"endLine": 50,
+					"summary": "File contains 50 lines of code",
+					"functions": ["constructor", "catch"]
+				},
+				{
+					"startLine": 51,
+					"endLine": 100,
+					"summary": "File contains 50 lines of code",
+					"functions": []
+				},
+				{
+					"startLine": 101,
+					"endLine": 109,
+					"summary": "File contains 9 lines of code",
+					"functions": ["createIgnorePatternManager"]
+				}
+			],
+			"timestamp": "2025-07-09T13:15:08.290Z",
+			"filePath": "/Users/priyaroul/Code/dockeeper/src/utils/ignore-patterns.ts",
+			"contentHash": "e22ed4675e84541c90bec9a73a21349c459532eb8eb2bfba697a560ef8c58a1c",
+			"lastModified": "2025-07-09T13:11:17.716Z"
+		},
+		"/Users/priyaroul/Code/dockeeper/src/utils/summary-storage.ts": {
+			"relativePath": "utils/summary-storage.ts",
+			"summary": "summary-storage.ts is structured across 5 sections: File contains 50 lines of code File contains 50 lines of code File contains 50 lines of code File contains 50 lines of code File contains 49 lines of code",
+			"keyFunctions": [
+				"constructor",
+				"catch",
+				"if",
+				"for",
+				"createSummaryStorage"
+			],
+			"dependencies": ["node:fs", "node:path", "node:crypto"],
+			"exportedSymbols": ["SummaryStorage"],
+			"chunkSummaries": [
+				{
+					"startLine": 1,
+					"endLine": 50,
+					"summary": "File contains 50 lines of code",
+					"functions": ["constructor"]
+				},
+				{
+					"startLine": 51,
+					"endLine": 100,
+					"summary": "File contains 50 lines of code",
+					"functions": ["catch", "if"]
+				},
+				{
+					"startLine": 101,
+					"endLine": 150,
+					"summary": "File contains 50 lines of code",
+					"functions": ["if", "catch"]
+				},
+				{
+					"startLine": 151,
+					"endLine": 200,
+					"summary": "File contains 50 lines of code",
+					"functions": ["catch", "if", "for"]
+				},
+				{
+					"startLine": 201,
+					"endLine": 249,
+					"summary": "File contains 49 lines of code",
+					"functions": ["if", "createSummaryStorage"]
+				}
+			],
+			"timestamp": "2025-07-09T13:15:08.291Z",
+			"filePath": "/Users/priyaroul/Code/dockeeper/src/utils/summary-storage.ts",
+			"contentHash": "44ba81ff218e076d4a2b9a95aa5962c95feb44142524e427126461065c3d4319",
+			"lastModified": "2025-07-09T13:11:56.532Z"
+		},
+		"/Users/priyaroul/Code/dockeeper/src/writer-agent.ts": {
+			"relativePath": "writer-agent.ts",
+			"summary": "writer-agent.ts is structured across 2 sections: File contains 50 lines of code File contains 39 lines of code",
+			"keyFunctions": ["generateSystemPrompt", "updateReadme", "if"],
+			"dependencies": [],
+			"exportedSymbols": [],
+			"chunkSummaries": [
+				{
+					"startLine": 1,
+					"endLine": 50,
+					"summary": "File contains 50 lines of code",
+					"functions": ["generateSystemPrompt"]
+				},
+				{
+					"startLine": 51,
+					"endLine": 89,
+					"summary": "File contains 39 lines of code",
+					"functions": ["updateReadme", "if"]
+				}
+			],
+			"timestamp": "2025-07-09T13:15:08.292Z",
+			"filePath": "/Users/priyaroul/Code/dockeeper/src/writer-agent.ts",
+			"contentHash": "cb5e08077a8fb62644472649f536fc858f5d93815f7d3ed734b6668040dfcb9f",
+			"lastModified": "2025-07-09T12:16:12.116Z"
+		}
+	},
+	"metadata": {
+		"lastUpdated": "2025-07-09T13:15:08.292Z",
+		"totalFiles": 18,
+		"cacheHits": 0,
+		"cacheMisses": 18
+	}
+}
