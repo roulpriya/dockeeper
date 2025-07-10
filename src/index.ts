@@ -2,14 +2,19 @@
 
 import "dotenv/config.js";
 import { existsSync } from "node:fs";
-import { Git } from "./git";
-import { updateReadme } from "./writer-agent";
+import {
+	DocumentationAgent,
+	type ProcessingResult,
+} from "./documentation-agent";
 
 interface ParsedArgs {
 	path: string;
 	baseRef?: string;
 	headRef?: string;
 	help: boolean;
+	html: boolean;
+	staged: boolean;
+	updateReadme: boolean;
 }
 
 function showHelp(): void {
@@ -22,18 +27,27 @@ Options:
   -B, --base <ref>     Base reference for comparison
   -H, --head <ref>     Head reference for comparison  
   -h, --help           Show this help message
+  --html               Generate HTML summary report
+  --staged             Process staged changes instead of comparing refs
+  --update-readme      Update README.md with last commit vs master
 
 Examples:
-  docai                          # Use current directory
-  docai /path/to/repo            # Use specific path
+  docai                          # Use current directory, process staged changes
+  docai /path/to/repo            # Use specific path, process staged changes
   docai -B main -H feature       # Compare main to feature branch
-  docai /path/to/repo -B v1.0.0  # Compare v1.0.0 to HEAD in specific path`);
+  docai /path/to/repo -B v1.0.0  # Compare v1.0.0 to HEAD in specific path
+  docai --html                   # Generate HTML report for staged changes
+  docai -B main -H feature --html # Compare refs and generate HTML report
+  docai --update-readme          # Update README.md with last commit vs master`);
 }
 
 function parseArgs(args: string[]): ParsedArgs {
 	const parsed: ParsedArgs = {
 		path: process.cwd(),
 		help: false,
+		html: false,
+		staged: false,
+		updateReadme: false,
 	};
 
 	let i = 0;
@@ -42,6 +56,15 @@ function parseArgs(args: string[]): ParsedArgs {
 
 		if (arg === "-h" || arg === "--help") {
 			parsed.help = true;
+			i++;
+		} else if (arg === "--html") {
+			parsed.html = true;
+			i++;
+		} else if (arg === "--staged") {
+			parsed.staged = true;
+			i++;
+		} else if (arg === "--update-readme") {
+			parsed.updateReadme = true;
 			i++;
 		} else if (arg === "-B" || arg === "--base") {
 			if (i + 1 >= args.length) {
@@ -82,26 +105,86 @@ async function main() {
 			process.exit(1);
 		}
 
-		// Create Git instance
-		const gitAnalyzer = new Git(args.path);
-
-		// Use compareRefs method
-		const { diff, warnings } = await gitAnalyzer.compareRefs(
-			args.baseRef,
-			args.headRef,
-		);
-
-		// Display warnings if any
-		if (warnings.length > 0) {
-			console.warn(warnings.join("\n"));
+		// Check for API key
+		const apiKey = process.env.OPENAI_API_KEY;
+		if (!apiKey) {
+			console.error("Error: OPENAI_API_KEY environment variable is required");
+			process.exit(1);
 		}
 
-		// Use the diff for documentation updates
-		if (diff.trim()) {
-			await updateReadme(diff, args.path);
+		// Create Documentation Agent
+		const docAgent = new DocumentationAgent(apiKey, args.path);
+
+		// Show project info
+		const projectInfo = await docAgent.getProjectInfo();
+		console.log(`🚀 Processing project: ${projectInfo.projectDir}`);
+		console.log(`🌿 Current branch: ${projectInfo.currentBranch || "unknown"}`);
+		console.log(`📍 Last commit: ${projectInfo.lastCommit || "unknown"}`);
+
+		let result: ProcessingResult;
+
+		// Process based on arguments
+		if (args.updateReadme) {
+			// Update README with last commit vs master
+			const git = new (await import("./git")).Git(args.path);
+			const mainBranch = await git.getMainBranch();
+			console.log(`📝 Updating README.md with last commit vs ${mainBranch}`);
+			
+			// Process diff between main branch and HEAD
+			result = await docAgent.processLargeDiff(
+				mainBranch,
+				"HEAD",
+				args.html,
+			);
+		} else if (args.staged || (!args.baseRef && !args.headRef)) {
+			// Process staged changes
+			result = await docAgent.processStagedChanges(args.html);
 		} else {
-			console.log("No changes to process.");
+			// Validate refs if provided
+			const validation = await docAgent.validateRefs(
+				args.baseRef,
+				args.headRef,
+			);
+			if (!validation.valid) {
+				console.error("Validation errors:");
+				for (const warning of validation.warnings) {
+					console.error(`  - ${warning}`);
+				}
+				process.exit(1);
+			}
+
+			// Process diff between refs
+			result = await docAgent.processLargeDiff(
+				args.baseRef || "HEAD~1",
+				args.headRef || "HEAD",
+				args.html,
+			);
 		}
+
+		// Display results
+		console.log("\n📈 Processing Results:");
+		console.log(`📊 ${result.summary.totalFilesChanged} files changed`);
+		console.log(`➕ ${result.summary.totalLinesAdded} lines added`);
+		console.log(`➖ ${result.summary.totalLinesDeleted} lines deleted`);
+
+		if (result.documentationUpdates.length > 0) {
+			console.log("\n📚 Documentation Updates:");
+			for (const update of result.documentationUpdates) {
+				const emoji =
+					update.action === "created"
+						? "✨"
+						: update.action === "updated"
+							? "📝"
+							: "📄";
+				console.log(`  ${emoji} ${update.file}: ${update.action}`);
+			}
+		}
+
+		if (result.htmlOutputPath) {
+			console.log(`\n🌐 HTML report saved to: ${result.htmlOutputPath}`);
+		}
+
+		console.log("\n✅ Documentation processing complete!");
 	} catch (error) {
 		if (error instanceof Error) {
 			console.error(`Error: ${error.message}`);

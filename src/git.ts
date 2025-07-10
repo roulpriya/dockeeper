@@ -9,10 +9,46 @@ export class Git {
 		this.git = simpleGit(repoPath);
 	}
 
+	async getMainBranch(): Promise<string> {
+		try {
+			// First try to get the default branch from remote
+			const remotes = await this.git.getRemotes(true);
+			if (remotes.length > 0) {
+				try {
+					const remote = remotes[0].name;
+					const branches = await this.git.branch(['-r']);
+					if (branches.all.includes(`${remote}/main`)) {
+						return 'main';
+					}
+					if (branches.all.includes(`${remote}/master`)) {
+						return 'master';
+					}
+				} catch {
+					// Fall through to local branch detection
+				}
+			}
+			
+			// Check local branches
+			const branches = await this.git.branch();
+			if (branches.all.includes('main')) {
+				return 'main';
+			}
+			if (branches.all.includes('master')) {
+				return 'master';
+			}
+			
+			// Fallback to current branch
+			return branches.current || 'HEAD';
+		} catch (error) {
+			console.warn('Could not determine main branch, using master as fallback');
+			return 'master';
+		}
+	}
+
 	private isVendoredOrIgnoredFile(filePath: string): boolean {
 		const vendoredPatterns = [
 			/node_modules/,
-			/\.git/,
+			/^\.git\//,
 			/dist/,
 			/build/,
 			/coverage/,
@@ -248,5 +284,44 @@ export class Git {
 		}
 
 		return fullPatch;
+	}
+
+	async getFileSpecificDiffs(
+		base: string,
+		head: string,
+	): Promise<Map<string, string>> {
+		const fileDiffs = new Map<string, string>();
+
+		// Get list of changed files
+		const changedFiles = await this.git.raw([
+			"diff",
+			"--name-only",
+			base,
+			head,
+		]);
+
+		const files = changedFiles.trim().split("\n").filter(Boolean);
+
+		// Get diff for each file
+		for (const file of files) {
+			if (this.shouldIncludeFile(file)) {
+				try {
+					const diff = await this.git.raw(["diff", base, head, "--", file]);
+					fileDiffs.set(file, diff);
+				} catch (error) {
+					console.warn(`Error getting diff for ${file}:`, error);
+				}
+			}
+		}
+
+		return fileDiffs;
+	}
+
+	public async getStatus() {
+		return this.git.status();
+	}
+
+	public async getLog(options?: string[]) {
+		return this.git.log(options);
 	}
 }

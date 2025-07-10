@@ -1,0 +1,73 @@
+# Dockeeper GitHub Actions Workflow
+#
+# This workflow automates documentation updates using Dockeeper.
+# It runs on push and pull request events to main/master, analyzes code changes,
+# updates documentation using AI, and creates PRs or comments as needed.
+
+name: Dockeeper Documentation Automation
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  dockeeper:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Run Dockeeper to update documentation
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          npx dockeeper --staged --html
+
+      - name: Check for documentation changes
+        id: git-check
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md CONTRIBUTING.md DESIGN.md || true
+          git diff --cached --quiet || echo "docs_changed=true" >> $GITHUB_ENV
+
+      - name: Commit and push documentation updates
+        if: env.docs_changed == 'true'
+        run: |
+          git commit -m "docs: update documentation via Dockeeper [skip ci]" || true
+          git push
+
+      - name: Create Pull Request for docs (if needed)
+        if: env.docs_changed == 'true' && github.event_name == 'push'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          title: "docs: update documentation via Dockeeper"
+          commit-message: "docs: update documentation via Dockeeper [skip ci]"
+          body: "Automated documentation update based on recent code changes."
+          branch: dockeeper/docs-update
+          base: ${{ github.ref_name }}
+
+      - name: Comment on PR if docs updated
+        if: env.docs_changed == 'true' && github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "Dockeeper: Documentation files have been updated based on the recent code changes."
+            })
