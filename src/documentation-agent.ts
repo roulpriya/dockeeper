@@ -1,5 +1,3 @@
-import { writeFileSync } from "node:fs";
-import path from "node:path";
 import { EnhancedDocumentationWriter } from "./enhanced-writer-agent";
 import { Git } from "./git";
 import { DiffSummarizer, type DiffSummary } from "./summarizer-agent";
@@ -11,7 +9,6 @@ export interface ProcessingResult {
 		summary: string;
 		action: "created" | "updated" | "unchanged";
 	}>;
-	htmlOutputPath?: string;
 }
 
 export class DocumentationAgent {
@@ -30,7 +27,6 @@ export class DocumentationAgent {
 	async processLargeDiff(
 		base: string,
 		head: string,
-		outputHtml = false,
 	): Promise<ProcessingResult> {
 		console.log("📊 Assembling file-specific diffs...");
 
@@ -57,26 +53,13 @@ export class DocumentationAgent {
 		const documentationUpdates =
 			await this.writer.updateDocumentationFromFileDiffs(fileDiffs);
 
-		let htmlOutputPath: string | undefined;
-
-		// Step 4: Generate HTML output if requested
-		if (outputHtml) {
-			console.log("🌐 Generating HTML summary...");
-			htmlOutputPath = await this.generateHTMLReport(
-				summary,
-				documentationUpdates,
-			);
-			console.log(`✅ HTML report generated: ${htmlOutputPath}`);
-		}
-
 		return {
 			summary,
 			documentationUpdates,
-			htmlOutputPath,
 		};
 	}
 
-	async processStagedChanges(outputHtml = false): Promise<ProcessingResult> {
+	async processStagedChanges(): Promise<ProcessingResult> {
 		console.log("📊 Getting staged changes...");
 
 		const diff = await this.git.getAllDiffs();
@@ -97,76 +80,12 @@ export class DocumentationAgent {
 		const documentationUpdates =
 			await this.writer.updateDocumentationFromDiff(diff);
 
-		let htmlOutputPath: string | undefined;
-
-		if (outputHtml) {
-			console.log("🌐 Generating HTML summary...");
-			htmlOutputPath = await this.generateHTMLReport(
-				summary,
-				documentationUpdates,
-			);
-			console.log(`✅ HTML report generated: ${htmlOutputPath}`);
-		}
-
 		return {
 			summary,
 			documentationUpdates,
-			htmlOutputPath,
 		};
 	}
 
-	private async generateHTMLReport(
-		summary: DiffSummary,
-		documentationUpdates: Array<{
-			file: string;
-			summary: string;
-			action: "created" | "updated" | "unchanged";
-		}>,
-	): Promise<string> {
-		const html = await this.writer.generateHTMLSummary(summary);
-
-		// Add documentation updates section to HTML
-		const documentationSection = `
-    <div class="documentation-updates">
-        <h2>Documentation Updates</h2>
-        ${documentationUpdates
-					.map(
-						(update) => `
-            <div class="doc-update">
-                <div class="doc-header">${update.file}</div>
-                <div class="action ${update.action}">${update.action.toUpperCase()}</div>
-                <p>${update.summary}</p>
-            </div>
-        `,
-					)
-					.join("")}
-    </div>
-</body>
-</html>`;
-
-		const enhancedHtml = html.replace("</body>\n</html>", documentationSection);
-
-		// Add styles for documentation section
-		const additionalStyles = `
-        .documentation-updates { margin-top: 30px; }
-        .doc-update { border: 1px solid #ddd; margin: 10px 0; padding: 10px; border-radius: 5px; }
-        .doc-header { font-weight: bold; color: #333; }
-        .action { padding: 2px 8px; border-radius: 3px; font-size: 12px; }
-        .action.created { background: #d4edda; color: #155724; }
-        .action.updated { background: #fff3cd; color: #856404; }
-        .action.unchanged { background: #f8f9fa; color: #6c757d; }
-        `;
-
-		const finalHtml = enhancedHtml.replace(
-			"</style>",
-			`${additionalStyles}</style>`,
-		);
-
-		const outputPath = path.join(this.projectDir, "diff-summary.html");
-		writeFileSync(outputPath, finalHtml);
-
-		return outputPath;
-	}
 
 	async validateRefs(
 		baseRef?: string,

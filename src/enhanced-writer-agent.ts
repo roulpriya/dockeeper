@@ -12,12 +12,6 @@ function generateEnhancedSystemPrompt(projectDir: string) {
 	return `You are an AI-powered documentation agent for software projects.
 Your task is to analyze code change summaries and update or create documentation files accordingly.
 
-You have access to the following input variables:
-
-<project_directory>
-${projectDir}
-</project_directory>
-
 You have access to the following tools:
 1. read(file_path): Reads the content of a file
 2. write(file_path, content): Writes content to a file
@@ -45,6 +39,12 @@ When updating documentation, focus on:
 Provide your output in structured format with clear summaries of what was changed in each documentation file.
 
 Never ask for additional information or clarification - work with the provided summaries to make the best possible documentation updates.
+
+You have access to the following input variables:
+
+<project_directory>
+${projectDir}
+</project_directory>
 `;
 }
 
@@ -85,30 +85,48 @@ export class EnhancedDocumentationWriter {
 		const prompt = `Analyze the following code change summary and update documentation accordingly:
 
 <change_summary>
-Overall Summary: ${summary.overallSummary}
+<overall_summary>
+${summary.overallSummary}
+</overall_summary>
 
-File Changes:
+<file_changes>
 ${summary.fileSummaries
 	.map(
 		(fs) =>
-			`- ${fs.file}: ${fs.summary} (${fs.changeType}, +${fs.linesAdded}/-${fs.linesDeleted})`,
+			`<file_change>
+<file>${fs.file}</file>
+<summary>${fs.summary}</summary>
+<change_type>${fs.changeType}</change_type>
+<lines_added>${fs.linesAdded}</lines_added>
+<lines_deleted>${fs.linesDeleted}</lines_deleted>
+</file_change>`,
 	)
 	.join("\n")}
+</file_changes>
 
-Statistics:
-- Total Files Changed: ${summary.totalFilesChanged}
-- Total Lines Added: ${summary.totalLinesAdded}
-- Total Lines Deleted: ${summary.totalLinesDeleted}
+<statistics>
+<total_files_changed>${summary.totalFilesChanged}</total_files_changed>
+<total_lines_added>${summary.totalLinesAdded}</total_lines_added>
+<total_lines_deleted>${summary.totalLinesDeleted}</total_lines_deleted>
+</statistics>
 </change_summary>
 
-Please:
+# Instructions:
 1. Use the tree() tool to understand the project structure
 2. Check for existing documentation files using ls() and read()
 3. Update or create documentation files as appropriate
 4. Focus on user-facing changes and new functionality
 5. Ensure all documentation is clear and accurate
 
-Return a summary of what documentation files were updated and what changes were made.`;
+Return your response in the following XML format:
+
+<documentation_updates>
+<update>
+<file>path/to/file.md</file>
+<action>created|updated|unchanged</action>
+<summary>Brief description of what was changed</summary>
+</update>
+</documentation_updates>`;
 
 		const response = await this.agent.chat(prompt);
 		return this.parseDocumentationUpdates(response);

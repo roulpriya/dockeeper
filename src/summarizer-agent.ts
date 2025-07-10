@@ -23,10 +23,6 @@ Your task is to analyze git diffs and provide structured summaries of changes.
 
 You have access to the following input variables:
 
-<project_directory>
-${projectDir}
-</project_directory>
-
 You have access to the following tools:
 1. read(file_path): Reads the content of a file
 2. tree(): Displays the directory structure of the project
@@ -42,6 +38,10 @@ For each file in the diff, you should:
 
 Provide your output in the following structured format:
 
+<project_directory>
+${projectDir}
+</project_directory>
+
 <overall_summary>
 Brief 1-2 sentence summary of all changes
 </overall_summary>
@@ -56,11 +56,6 @@ For each file:
 - Category: [feature|bugfix|refactoring|test|documentation|config|other]
 </file_summaries>
 
-<statistics>
-- Total Files Changed: [number]
-- Total Lines Added: [number]
-- Total Lines Deleted: [number]
-</statistics>
 
 Focus on the semantic meaning of changes rather than just syntax. Identify patterns and group related changes together in your summary.
 `;
@@ -164,7 +159,6 @@ Focus on the main themes and purposes of the changes.`;
 		const filesSummariesMatch = response.match(
 			/<file_summaries>(.*?)<\/file_summaries>/s,
 		);
-		const statsMatch = response.match(/<statistics>(.*?)<\/statistics>/s);
 
 		const overallSummary = overallMatch?.[1]?.trim() || "Summary not available";
 
@@ -179,22 +173,10 @@ Focus on the main themes and purposes of the changes.`;
 			}
 		}
 
-		let totalFilesChanged = 0;
-		let totalLinesAdded = 0;
-		let totalLinesDeleted = 0;
-
-		if (statsMatch) {
-			const stats = statsMatch[1];
-			const filesMatch = stats.match(/Total Files Changed: (\d+)/);
-			const addedMatch = stats.match(/Total Lines Added: (\d+)/);
-			const deletedMatch = stats.match(/Total Lines Deleted: (\d+)/);
-
-			totalFilesChanged = filesMatch
-				? Number.parseInt(filesMatch[1])
-				: fileSummaries.length;
-			totalLinesAdded = addedMatch ? Number.parseInt(addedMatch[1]) : 0;
-			totalLinesDeleted = deletedMatch ? Number.parseInt(deletedMatch[1]) : 0;
-		}
+		// Calculate statistics from file summaries
+		const totalFilesChanged = fileSummaries.length;
+		const totalLinesAdded = fileSummaries.reduce((sum, fs) => sum + fs.linesAdded, 0);
+		const totalLinesDeleted = fileSummaries.reduce((sum, fs) => sum + fs.linesDeleted, 0);
 
 		return {
 			overallSummary,
